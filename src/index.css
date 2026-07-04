@@ -1,0 +1,186 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-base bg-app-glow text-ink font-display antialiased;
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  button {
+    font-family: inherit;
+  }
+
+  ::selection {
+    background: rgba(57, 255, 90, 0.3);
+  }
+}
+
+@layer components {
+  /* Shared form control look — kept here since it applies to bare
+     input/select/textarea tags across every page. */
+  .field-control {
+    @apply w-full rounded-md border border-line bg-field px-3 py-2.5 text-[13.5px] font-mono text-ink outline-none transition-colors duration-150 placeholder:text-inkFaint focus:border-amber-dim;
+  }
+
+  .panel {
+    @apply rounded-lg border border-lineSoft bg-panel p-4 transition-all duration-200 hover:border-line hover:shadow-[0_8px_28px_rgba(0,0,0,0.25)] sm:p-5;
+  }
+
+  .panel + .panel {
+    @apply mt-[18px];
+  }
+
+  .page-head {
+    @apply mb-6 flex flex-wrap items-baseline justify-between gap-4;
+  }
+
+  .page-head h1 {
+    @apply m-0 mb-1 text-lg tracking-tight sm:text-xl;
+  }
+
+  .page-head p {
+    @apply m-0 text-[13.5px] text-inkDim;
+  }
+
+  .panel-title {
+    @apply m-0 mb-3.5 flex items-center justify-between text-xs uppercase tracking-wide text-inkFaint;
+  }
+
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-line bg-panelRaised px-4 py-2.5 text-[13px] font-semibold text-ink no-underline transition-all duration-150 enabled:hover:-translate-y-px enabled:hover:border-amber-dim enabled:active:translate-y-0 enabled:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-45;
+  }
+
+  .btn-primary {
+    @apply border-amber bg-amber text-[#07111f] enabled:hover:border-amber-dim enabled:hover:bg-amber-dim enabled:hover:shadow-[0_4px_18px_rgba(57,255,90,0.3)];
+  }
+
+  .btn-danger {
+    @apply border-rust-dim bg-transparent text-rust enabled:hover:bg-rust/10;
+  }
+
+  .btn-sm {
+    @apply px-2.5 py-1.5 text-xs;
+  }
+
+  .field-group {
+    @apply mb-4;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wide text-inkDim;
+  }
+
+  .field-hint {
+    @apply mt-1.5 text-[11.5px] font-normal normal-case tracking-normal text-inkFaint;
+  }
+
+  .chip {
+    @apply cursor-pointer rounded-full border border-dashed border-line bg-transparent px-2.5 py-1 font-mono text-[11px] text-inkDim transition-all duration-150 hover:-translate-y-px hover:scale-[1.03] hover:border-amber-dim hover:text-amber active:translate-y-0 active:scale-95;
+  }
+
+  .stat-row {
+    @apply my-3.5 grid grid-cols-2 gap-3 xs:grid-cols-3 sm:grid-cols-[repeat(auto-fit,minmax(96px,1fr))];
+  }
+
+  .stat {
+    @apply rounded-md border border-lineSoft bg-panelRaised px-3.5 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-teal-dim;
+  }
+
+  .stat-value {
+    @apply font-mono text-xl font-semibold;
+  }
+
+  .stat-label {
+    @apply mt-0.5 text-[10.5px] uppercase tracking-wide text-inkFaint;
+  }
+
+  .empty-state {
+    @apply animate-fade-in-up px-5 py-12 text-center text-inkFaint;
+  }
+
+  .empty-state-glyph {
+    @apply mb-2.5 font-mono text-2xl text-amber-dim;
+  }
+
+  .loading-dots::after {
+    @apply inline-block animate-loading-dots overflow-hidden align-bottom;
+    content: '...';
+    width: 0;
+  }
+
+  .error-banner {
+    @apply mb-4 rounded-md border border-rust-dim bg-rust/10 px-3.5 py-2.5 text-[13px] text-rust;
+  }
+
+  .badge-dot {
+    @apply h-1.5 w-1.5 rounded-full bg-current;
+  }
+
+  .job-card {
+    @apply mb-2.5 flex animate-fade-in-up flex-col items-start gap-2 rounded-md border border-lineSoft bg-panelRaised p-3.5 transition-all duration-150 hover:-translate-y-0.5 hover:border-amber-dim hover:shadow-[0_8px_20px_rgba(0,0,0,0.28)] sm:flex-row sm:items-center sm:justify-between sm:gap-4;
+  }
+
+  .job-card-name {
+    @apply text-sm font-semibold;
+  }
+
+  .job-card-meta {
+    @apply mt-1 font-mono text-[11.5px] text-inkFaint;
+  }
+
+  .table-wrap {
+    @apply overflow-x-auto [-webkit-overflow-scrolling:touch];
+  }
+
+  table {
+    @apply w-full min-w-[640px] border-collapse text-[13px];
+  }
+
+  thead th {
+    @apply whitespace-nowrap border-b border-line px-2.5 py-2 text-left text-[10.5px] uppercase tracking-wide text-inkFaint;
+  }
+
+  tbody td {
+    @apply border-b border-lineSoft px-2.5 py-2.5 align-top;
+  }
+
+  tbody tr {
+    @apply animate-fade-in-up transition-colors duration-150 hover:bg-amber/[0.04];
+  }
+
+  .toolbar {
+    @apply mb-4 flex flex-col flex-wrap items-stretch gap-2.5 sm:flex-row sm:items-center;
+  }
+
+  .pagination {
+    @apply mt-3.5 flex flex-wrap items-center justify-center gap-2.5 font-mono text-xs text-inkDim sm:justify-end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
