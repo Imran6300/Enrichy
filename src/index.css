@@ -3,10 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+
   html,
   body,
   #root {
-    height: 100%;
+    min-height: 100%;
   }
 
   html {
@@ -60,6 +61,7 @@
 }
 
 @layer components {
+
   /* Shared form control look — kept here since it applies to bare
      input/select/textarea tags across every page. */
   .field-control {
@@ -67,10 +69,10 @@
   }
 
   .panel {
-    @apply rounded-lg border border-lineSoft bg-panel p-4 transition-all duration-200 hover:border-line hover:shadow-[0_8px_28px_rgba(0,0,0,0.25)] sm:p-5;
+    @apply rounded-lg border border-lineSoft bg-panel p-4 transition-all duration-200 hover:border-line hover:shadow-panel sm:p-5;
   }
 
-  .panel + .panel {
+  .panel+.panel {
     @apply mt-[18px];
   }
 
@@ -95,7 +97,7 @@
   }
 
   .btn-primary {
-    @apply border-amber bg-amber text-[#07111f] enabled:hover:border-amber-dim enabled:hover:bg-amber-dim enabled:hover:shadow-[0_4px_18px_rgba(57,255,90,0.3)];
+    @apply border-amber bg-amber text-[#07111f] enabled:hover:border-amber-dim enabled:hover:bg-amber-dim enabled:hover:shadow-btn-primary;
   }
 
   .btn-danger {
@@ -123,7 +125,7 @@
   }
 
   .stat-row {
-    @apply my-3.5 grid grid-cols-2 gap-3 xs:grid-cols-3 sm:grid-cols-[repeat(auto-fit,minmax(96px,1fr))];
+    @apply my-3.5 grid grid-cols-2 gap-3 xs:grid-cols-3 sm:grid-cols-stats;
   }
 
   .stat {
@@ -161,7 +163,7 @@
   }
 
   .job-card {
-    @apply mb-2.5 flex animate-fade-in-up flex-col items-start gap-2 rounded-md border border-lineSoft bg-panelRaised p-3.5 transition-all duration-150 hover:-translate-y-0.5 hover:border-amber-dim hover:shadow-[0_8px_20px_rgba(0,0,0,0.28)] sm:flex-row sm:items-center sm:justify-between sm:gap-4;
+    @apply mb-2.5 flex animate-fade-in-up flex-col items-start gap-2 rounded-md border border-lineSoft bg-panelRaised p-3.5 transition-all duration-150 hover:-translate-y-0.5 hover:border-amber-dim hover:shadow-job-card sm:flex-row sm:items-center sm:justify-between sm:gap-4;
   }
 
   .job-card-name {
@@ -213,6 +215,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
