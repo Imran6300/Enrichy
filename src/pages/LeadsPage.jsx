@@ -123,11 +123,11 @@ export default function LeadsPage() {
               <tr>
                 <th>Company</th>
                 <th>Email</th>
-                <th>City</th>
-                <th>Keyword</th>
-                <th>Status</th>
+                <th className="hidden md:table-cell">City</th>
+                <th className="hidden lg:table-cell">Keyword</th>
+                <th className="hidden sm:table-cell">Status</th>
                 <th>Score</th>
-                <th>Recommendation</th>
+                <th className="hidden sm:table-cell">Recommendation</th>
                 <th></th>
               </tr>
             </thead>
@@ -139,15 +139,19 @@ export default function LeadsPage() {
                     className="cursor-pointer"
                     onClick={() => setExpanded(expanded === lead._id ? null : lead._id)}
                   >
-                    <td>{lead.companyName}</td>
-                    <td className="font-mono">{lead.primaryEmail || <span className="text-inkFaint">—</span>}</td>
-                    <td>{lead.city}</td>
-                    <td className="text-inkDim">{lead.matchedKeyword}</td>
-                    <td className="text-inkDim">{lead.status}</td>
+                    <td className="max-w-[100px] truncate sm:max-w-[220px]" title={lead.companyName}>
+                      {lead.companyName}
+                    </td>
+                    <td className="max-w-[110px] truncate font-mono sm:max-w-[220px]" title={lead.primaryEmail || ''}>
+                      {lead.primaryEmail || <span className="text-inkFaint">—</span>}
+                    </td>
+                    <td className="hidden md:table-cell">{lead.city}</td>
+                    <td className="hidden text-inkDim lg:table-cell">{lead.matchedKeyword}</td>
+                    <td className="hidden text-inkDim sm:table-cell">{lead.status}</td>
                     <td className={`font-mono ${scoreColor(lead.emailVerificationScore)}`}>
                       {lead.emailVerificationScore ?? '—'}
                     </td>
-                    <td className="text-inkDim">{lead.emailRecommendation || '—'}</td>
+                    <td className="hidden text-inkDim sm:table-cell">{lead.emailRecommendation || '—'}</td>
                     <td>
                       <button
                         className="btn btn-sm btn-danger"
@@ -164,6 +168,29 @@ export default function LeadsPage() {
                     <tr key={lead._id + '-detail'}>
                       <td colSpan={8} className="bg-panelRaised">
                         <div className="grid grid-cols-1 gap-4 text-[12.5px] xs:grid-cols-2 lg:grid-cols-3">
+                          {/* These four are duplicated from the table row only on the
+                              breakpoints where their column is hidden, so no data is
+                              lost when the table narrows for small screens. */}
+                          <div className="sm:hidden">
+                            <strong>Status</strong>
+                            <br />
+                            {lead.status}
+                          </div>
+                          <div className="sm:hidden">
+                            <strong>Recommendation</strong>
+                            <br />
+                            {lead.emailRecommendation || '—'}
+                          </div>
+                          <div className="md:hidden">
+                            <strong>City</strong>
+                            <br />
+                            {lead.city || '—'}
+                          </div>
+                          <div className="lg:hidden">
+                            <strong>Keyword</strong>
+                            <br />
+                            {lead.matchedKeyword || '—'}
+                          </div>
                           <div>
                             <strong>Website</strong>
                             <br />

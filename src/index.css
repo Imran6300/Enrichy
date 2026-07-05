@@ -30,6 +30,33 @@
   ::selection {
     background: rgba(57, 255, 90, 0.3);
   }
+
+  /* Themed scrollbars everywhere (table overflow, log feed, nav drawer) —
+     the default OS scrollbar is light gray and looks like a rendering bug
+     against this dark UI, especially on the horizontally-scrolling leads
+     table. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #233753 transparent;
+  }
+
+  *::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #233753;
+    border-radius: 999px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: #27e86d;
+  }
 }
 
 @layer components {
@@ -146,11 +173,22 @@
   }
 
   .table-wrap {
-    @apply overflow-x-auto [-webkit-overflow-scrolling:touch];
+    @apply relative overflow-x-auto rounded-md [-webkit-overflow-scrolling:touch];
+    /* Soft fade on the right edge hints there's more to scroll to, instead
+       of the table just abruptly cutting off. Fades away once fully
+       scrolled thanks to background-attachment: local. */
+    background:
+      linear-gradient(to right, theme('colors.panel') 30%, rgba(0, 0, 0, 0)),
+      linear-gradient(to right, rgba(0, 0, 0, 0), theme('colors.panel') 70%) 100% 0,
+      radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0)),
+      radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0)) 100% 0;
+    background-repeat: no-repeat;
+    background-size: 24px 100%, 24px 100%, 10px 100%, 10px 100%;
+    background-attachment: local, local, scroll, scroll;
   }
 
   table {
-    @apply w-full min-w-[640px] border-collapse text-[13px];
+    @apply w-full border-collapse text-[13px] sm:min-w-[640px];
   }
 
   thead th {

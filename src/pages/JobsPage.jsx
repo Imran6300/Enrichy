@@ -63,9 +63,9 @@ export default function JobsPage() {
               style={{ animationDelay: `${Math.min(i, 6) * 0.04}s` }}
             >
               <div className="job-card">
-                <div>
-                  <div className="job-card-name">{job.name}</div>
-                  <div className="job-card-meta">
+                <div className="w-full min-w-0 sm:w-auto">
+                  <div className="job-card-name truncate">{job.name}</div>
+                  <div className="job-card-meta truncate">
                     {job.keywords.length} keyword(s) × {job.cities.length} location(s) · target {job.target} ·
                     started {timeAgo(job.createdAt)}
                   </div>

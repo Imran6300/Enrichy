@@ -60,7 +60,17 @@ export default function App() {
 
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[236px_1fr]">
-      <aside className="sticky top-0 z-30 flex flex-col border-b border-lineSoft bg-panel lg:static lg:h-screen lg:gap-7 lg:overflow-y-auto lg:border-b-0 lg:border-r lg:px-4 lg:py-[22px]">
+      <aside className="sticky top-0 z-30 flex flex-col border-b border-lineSoft bg-panel lg:static lg:border-b-0 lg:border-r">
+        {/* This inner wrapper is what actually sticks/scrolls with the
+            viewport. The OUTER <aside> is left unconstrained in height on
+            desktop so it naturally stretches to match the main column's
+            height (CSS Grid's default row-stretch behavior) — that's what
+            makes its dark background cover the entire sidebar column, even
+            on pages taller than one screen. Without this split, a fixed
+            h-screen on the aside itself left a gap below it that leaked the
+            page's background glow through as you scrolled past one
+            viewport-height of content. */}
+        <div className="flex flex-col lg:sticky lg:top-0 lg:h-screen lg:gap-7 lg:overflow-y-auto lg:px-4 lg:py-[22px]">
         <div className="flex items-center justify-between gap-3 px-4 py-3.5 lg:px-2 lg:py-0">
           <Brand />
 
@@ -86,8 +96,22 @@ export default function App() {
           </button>
         </div>
 
+        {/* Mobile menu: an absolutely-positioned dropdown anchored below the
+            header. It floats OVER the page instead of pushing main content
+            down, which is the standard mobile nav pattern and avoids any
+            ambiguity between "push" and "overlap" behavior. A backdrop
+            behind it makes the overlay obvious and closes the menu on tap.
+            On desktop (lg+) it becomes a normal static column again. */}
+        {menuOpen && (
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="fixed inset-0 z-20 bg-base/60 backdrop-blur-[1px] lg:hidden"
+            onClick={() => setMenuOpen(false)}
+          />
+        )}
         <div
-          className={`overflow-hidden border-b border-lineSoft bg-panel shadow-2xl transition-[max-height] duration-300 ease-out lg:flex lg:flex-1 lg:flex-col lg:overflow-visible lg:border-b-0 lg:shadow-none ${
+          className={`absolute left-0 right-0 top-full z-20 overflow-hidden border-b border-lineSoft bg-panel shadow-[0_20px_30px_-12px_rgba(0,0,0,0.55)] transition-[max-height] duration-300 ease-out lg:static lg:flex lg:flex-1 lg:flex-col lg:overflow-visible lg:border-b-0 lg:shadow-none ${
             menuOpen ? 'max-h-[480px]' : 'max-h-0 lg:max-h-none'
           }`}
         >
@@ -113,9 +137,10 @@ export default function App() {
             </button>
           </div>
         </div>
+        </div>
       </aside>
 
-      <main className="w-full max-w-[1180px] px-4 py-6 pb-12 sm:px-6 lg:px-10 lg:py-[30px] lg:pb-[60px]">
+      <main className="min-w-0 w-full max-w-[1180px] px-4 py-6 pb-12 sm:px-6 lg:px-10 lg:py-[30px] lg:pb-[60px]">
         <Routes>
           <Route path="/" element={<NewJobPage />} />
           <Route path="/jobs" element={<JobsPage />} />
