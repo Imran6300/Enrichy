@@ -10,6 +10,7 @@ import NewJobPage from "./pages/NewJobPage.jsx";
 import JobsPage from "./pages/JobsPage.jsx";
 import JobDetailPage from "./pages/JobDetailPage.jsx";
 import LeadsPage from "./pages/LeadsPage.jsx";
+import SettingsPage from "./pages/SettingsPage.jsx";
 import { clearAuth } from "./auth.js";
 import { resetSocket } from "./socket.js";
 
@@ -161,14 +162,18 @@ export default function App() {
                 label="Leads"
                 onNavigate={() => setMenuOpen(false)}
               />
+              <NavItem
+                to="/settings"
+                icon="⚙"
+                label="Settings"
+                onNavigate={() => setMenuOpen(false)}
+              />
             </nav>
 
             <div className="mt-0 px-5 py-2.5 font-mono text-[10.5px] leading-relaxed text-inkFaint lg:mt-auto lg:px-2 lg:py-0">
-              Self-hosted discovery, enrichment
+              Self-hosted discovery &amp; enrichment engine.
               <br />
-              &amp; verification engine.
-              <br />
-              No third-party API keys required.
+              Bring your own LLM key — never stored on our server.
               <br />
               <button
                 type="button"
@@ -188,6 +193,7 @@ export default function App() {
           <Route path="/jobs" element={<JobsPage />} />
           <Route path="/jobs/:id" element={<JobDetailPage />} />
           <Route path="/leads" element={<LeadsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

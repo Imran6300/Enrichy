@@ -6,7 +6,7 @@ import LogFeed from '../components/LogFeed.jsx';
 import { api } from '../api.js';
 import { getSocket } from '../socket.js';
 
-const ACTIVE = ['queued', 'discovering', 'enriching', 'verifying', 'stopping'];
+const ACTIVE = ['queued', 'discovering', 'enriching', 'ai_verifying', 'verifying', 'stopping'];
 
 export default function JobDetailPage() {
   const { id } = useParams();
@@ -139,6 +139,18 @@ export default function JobDetailPage() {
       </div>
 
       {job.error && <div className="error-banner">{job.error}</div>}
+
+      {isActive && (
+        <div className="info-banner">
+          <span className="mt-0.5 shrink-0 text-amber">⏳</span>
+          <span>
+            <strong className="text-ink">This can take a few minutes.</strong> We're discovering, crawling
+            and AI-verifying each lead carefully rather than rushing it — that's what keeps the emails and
+            company data accurate. Feel free to leave this tab open in the background; it'll keep updating
+            live.
+          </span>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 items-start gap-[18px] lg:grid-cols-[1.1fr_0.9fr]">
         <div className="panel">

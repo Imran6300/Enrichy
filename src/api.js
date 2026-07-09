@@ -1,12 +1,10 @@
-import { getStoredApiKey, clearAuth } from './auth.js';
-
-const BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+import { getToken, clearAuth, getAiCreds, BASE } from './auth.js';
 
 async function request(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': getStoredApiKey(),
+      Authorization: `Bearer ${getToken()}`,
     },
     ...options,
   });
@@ -17,14 +15,16 @@ async function request(path, options = {}) {
     // no body / not json (e.g. CSV)
   }
   if (res.status === 401) {
-    // The stored key was rejected (e.g. server's API_KEY changed) — clear
-    // it so AuthGate re-prompts on the next render instead of the app
-    // silently failing every request forever.
+    // Session expired/invalid — clear it so AuthGate re-prompts on the
+    // next render instead of the app silently failing every request.
     clearAuth();
     window.location.reload();
   }
   if (!res.ok) {
-    throw new Error(body?.error || `Request failed (${res.status})`);
+    const err = new Error(body?.error || `Request failed (${res.status})`);
+    err.status = res.status;
+    err.body = body;
+    throw err;
   }
   return body;
 }
@@ -34,8 +34,24 @@ export const api = {
 
   suggestions: () => request('/api/meta/suggestions'),
 
-  createJob: (payload) =>
-    request('/api/jobs', { method: 'POST', body: JSON.stringify(payload) }),
+  publicConfig: async () => {
+    const res = await fetch(`${BASE}/api/public-config`);
+    return res.json();
+  },
+
+  createJob: (payload) => {
+    const aiCreds = getAiCreds();
+    return request('/api/jobs', {
+      method: 'POST',
+      body: JSON.stringify({
+        ...payload,
+        aiProvider: aiCreds?.provider,
+        aiApiKey: aiCreds?.apiKey,
+        aiBaseURL: aiCreds?.baseURL,
+        aiModel: aiCreds?.model,
+      }),
+    });
+  },
   listJobs: () => request('/api/jobs'),
   getJob: (id) => request(`/api/jobs/${id}`),
   stopJob: (id) => request(`/api/jobs/${id}/stop`, { method: 'POST' }),
@@ -47,5 +63,5 @@ export const api = {
   updateLead: (id, payload) =>
     request(`/api/leads/${id}`, { method: 'PATCH', body: JSON.stringify(payload) }),
   exportCsvUrl: (params) =>
-    `${BASE}/api/leads/export.csv?${new URLSearchParams({ ...params, apiKey: getStoredApiKey() })}`,
+    `${BASE}/api/leads/export.csv?${new URLSearchParams({ ...params, token: getToken() })}`,
 };

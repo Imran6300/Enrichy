@@ -158,6 +158,10 @@
     @apply mb-4 rounded-md border border-rust-dim bg-rust/10 px-3.5 py-2.5 text-[13px] text-rust;
   }
 
+  .info-banner {
+    @apply mb-4 flex items-start gap-2.5 rounded-md border border-amber-dim/40 bg-amber/[0.08] px-3.5 py-2.5 text-[13px] leading-relaxed text-inkDim;
+  }
+
   .badge-dot {
     @apply h-1.5 w-1.5 rounded-full bg-current;
   }
